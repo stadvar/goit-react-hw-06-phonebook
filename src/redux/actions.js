@@ -1,21 +1,13 @@
-import types from './types';
-
+import { createAction } from '@reduxjs/toolkit';
 const shortid = require('shortid');
 
-export const addContact = data => ({
-  type: types.ADD,
+export const addContact = createAction('contacts/add', data => ({
   payload: {
     ...data,
     id: shortid.generate(),
   },
-});
+}));
 
-export const deleteContact = contactId => ({
-  type: types.DELETE,
-  payload: contactId,
-});
+export const deleteContact = createAction('contacts/delete');
 
-export const filterContact = value => ({
-  type: types.CHANGE_FILTER,
-  payload: value,
-});
+export const filterContact = createAction('contacts/changeFilter');

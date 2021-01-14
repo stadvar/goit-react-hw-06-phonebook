@@ -1,8 +1,22 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../../redux/actions';
 import './ContactList.css';
 import PropTypes from 'prop-types';
-const ContactList = ({ contacts, onDeleteContact }) => {
+
+const ContactList = () => {
+  const dispatch = useDispatch();
+  const onDeleteContact = id => dispatch(deleteContact(id));
+
+  const getContactList = state => {
+    const { filter, items } = state.contacts;
+    const normalizedFilter = filter.toLowerCase();
+
+    return items.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+  };
+  const contacts = useSelector(getContactList);
+
   return (
     <table className="List-table">
       <tbody>
@@ -29,24 +43,5 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired,
     }),
   ),
-  onDeleteContact: PropTypes.func.isRequired,
 };
-
-const getContactList = (allContacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-
-  return allContacts.filter(contact =>
-    contact.name.toLowerCase().includes(normalizedFilter),
-  );
-};
-
-const mapStateToProps = state => {
-  const { filter, items } = state.contacts;
-  return {
-    contacts: getContactList(items, filter),
-  };
-};
-const mapDispatchToProps = dispatch => ({
-  onDeleteContact: id => dispatch(deleteContact(id)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+export default ContactList;

@@ -5,7 +5,6 @@ import './ContactForm.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
-  const onSubmit = data => dispatch(addContact(data));
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const handleInputChange = e => {
@@ -28,7 +27,7 @@ function ContactForm() {
       alert('Fill all fields!');
       return;
     }
-    onSubmit({ name, number });
+    dispatch(addContact({ name, number }));
     setName('');
     setNumber('');
   };
